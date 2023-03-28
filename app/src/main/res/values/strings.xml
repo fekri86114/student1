@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Student1</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="course">Course</string>
+    <string name="score">Score</string>
+    <string name="save">save</string>
+    <string name="add_student">add student</string>
+</resources>
