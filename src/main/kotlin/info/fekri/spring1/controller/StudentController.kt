@@ -6,7 +6,9 @@ import info.fekri.spring1.repository.StudentRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
@@ -34,6 +36,20 @@ class StudentController {
 
         studentRepository.save(newStudent) // save student
 
+        return ResponseEntity.ok("Success")
+    }
+
+    @PutMapping("/student/updating{name}")
+    fun updateStudent(
+        @PathVariable("name") name: String,
+        @RequestBody data: String
+    ): ResponseEntity<String> {
+        val gson = Gson()
+        val newStudent: Student = gson.fromJson(data, Student::class.java)
+
+        studentRepository.save(newStudent)
+
+        println(name)
         return ResponseEntity.ok("Success")
     }
 
