@@ -90,7 +90,9 @@ class MainActivity : AppCompatActivity() , StudentAdapter.StudentEvent{
 
     private fun updateDataInServer(student: Student, position: Int) {
 
-
+        val intent = Intent(this, MainActivity2::class.java)
+        intent.putExtra("student", student)
+        startActivity(intent)
 
     }
 

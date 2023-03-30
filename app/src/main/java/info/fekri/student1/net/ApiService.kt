@@ -6,6 +6,8 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Path
 
 interface ApiService {
 
@@ -14,6 +16,12 @@ interface ApiService {
 
     @POST("/student")
     fun insertStudent(
+        @Body body: JsonObject
+    ): Call<String>
+
+    @PUT("/student/updating{name}")
+    fun updateStudent(
+        @Path("name") name: String,
         @Body body: JsonObject
     ): Call<String>
 

@@ -48,6 +48,17 @@ class ApiManager {
         })
     }
 
+    fun updateStudent(name: String, body: JsonObject, apiCallback: ApiCallback<String>) {
+        apiService.updateStudent(name, body).enqueue(object: Callback<String>{
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                apiCallback.onSuccess(response.body()!!)
+            }
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                apiCallback.onError(t.message!!)
+            }
+        })
+    }
+
     interface ApiCallback<T> {
         fun onSuccess(data: T)
         fun onError(msg: String)
