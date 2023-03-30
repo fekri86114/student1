@@ -1,10 +1,11 @@
-package info.fekri.student1.recycler
+package info.fekri.student1.mainScreen
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import info.fekri.student1.databinding.ItemMainBinding
+import info.fekri.student1.model.Student
 
 class StudentAdapter(private val data: ArrayList<Student>, private val studentEvent: StudentEvent) :
     RecyclerView.Adapter<StudentAdapter.StudentViewHolder>() {
@@ -40,14 +41,7 @@ class StudentAdapter(private val data: ArrayList<Student>, private val studentEv
         data.remove(student)
         notifyItemRemoved(position)
     }
-    fun addItem(student: Student) {
-        data.add(0, student)
-        notifyItemInserted(0)
-    }
-    fun updateItem(student: Student, position: Int) {
-        data[position] = student // >data.add(position, student)
-        notifyItemChanged(position)
-    }
+
     interface StudentEvent {
         fun onItemClicked(student: Student, position: Int)
         fun onItemLongClicked(student: Student, position: Int)

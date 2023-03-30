@@ -1,4 +1,4 @@
-package info.fekri.student1.recycler
+package info.fekri.student1.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

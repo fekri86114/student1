@@ -1,0 +1,13 @@
+package info.fekri.student1.extra
+
+import com.google.gson.JsonObject
+import info.fekri.student1.model.Student
+
+fun studentToJsonObject(student: Student): JsonObject {
+    val jsonObject = JsonObject()
+    jsonObject.addProperty("name", student.name)
+    jsonObject.addProperty("course", student.course)
+    jsonObject.addProperty("score", student.score)
+
+    return jsonObject
+}
