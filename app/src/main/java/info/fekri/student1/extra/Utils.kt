@@ -1,7 +1,7 @@
 package info.fekri.student1.extra
 
 import com.google.gson.JsonObject
-import info.fekri.student1.model.Student
+import info.fekri.student1.model.local.Student
 
 fun studentToJsonObject(student: Student): JsonObject {
     val jsonObject = JsonObject()

@@ -1,10 +1,9 @@
-package info.fekri.student1.model.retrofit
+package info.fekri.student1.model.api
 
 import com.google.gson.JsonObject
-import info.fekri.student1.model.Student
+import info.fekri.student1.model.local.Student
 import io.reactivex.Completable
 import io.reactivex.Single
-import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
