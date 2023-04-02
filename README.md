@@ -23,6 +23,7 @@ check `master` and `back-end` branch
    * MVVM
    * RxJava2
    * Room
+   * Live Data
    * RecyclerView
    * Spring Boot ( `back-end` branch)
    * Android AppCompat/Material Design Components
