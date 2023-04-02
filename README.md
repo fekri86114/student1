@@ -9,7 +9,7 @@ check `master` and `back-end` branch
 
 # What u need
 
-### You need to have your IP. To get it, open the `cmd` and run this: `ipconfig`
+### You need to have your IP for `BASE_URL`. To get it, open the `cmd` and run this: `ipconfig`
 
 ##### Output will be something like this (find `IPv4`):
 
