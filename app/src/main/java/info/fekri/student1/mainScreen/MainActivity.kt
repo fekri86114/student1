@@ -12,7 +12,7 @@ import info.fekri.student1.databinding.ActivityMainBinding
 import info.fekri.student1.extra.asyncRequest
 import info.fekri.student1.extra.showToast
 import info.fekri.student1.model.MainRepository
-import info.fekri.student1.model.local.Student
+import info.fekri.student1.model.local.student.Student
 import io.reactivex.CompletableObserver
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.CompositeDisposable

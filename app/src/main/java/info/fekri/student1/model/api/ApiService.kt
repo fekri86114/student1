@@ -1,7 +1,7 @@
 package info.fekri.student1.model.api
 
 import com.google.gson.JsonObject
-import info.fekri.student1.model.local.Student
+import info.fekri.student1.model.local.student.Student
 import io.reactivex.Completable
 import io.reactivex.Single
 import retrofit2.http.Body

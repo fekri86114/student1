@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import info.fekri.student1.databinding.ItemMainBinding
-import info.fekri.student1.model.local.Student
+import info.fekri.student1.model.local.student.Student
 
 class StudentAdapter(private val data: ArrayList<Student>, private val studentEvent: StudentEvent) :
     RecyclerView.Adapter<StudentAdapter.StudentViewHolder>() {

@@ -1,7 +1,7 @@
 package info.fekri.student1.mainScreen
 
 import info.fekri.student1.model.MainRepository
-import info.fekri.student1.model.local.Student
+import info.fekri.student1.model.local.student.Student
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.subjects.BehaviorSubject

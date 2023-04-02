@@ -2,7 +2,7 @@ package info.fekri.student1.model
 
 import info.fekri.student1.extra.BASE_URL
 import info.fekri.student1.extra.studentToJsonObject
-import info.fekri.student1.model.local.Student
+import info.fekri.student1.model.local.student.Student
 import info.fekri.student1.model.api.ApiService
 import io.reactivex.Completable
 import io.reactivex.Single

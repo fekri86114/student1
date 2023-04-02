@@ -1,7 +1,7 @@
 package info.fekri.student1.addStudent
 
 import info.fekri.student1.model.MainRepository
-import info.fekri.student1.model.local.Student
+import info.fekri.student1.model.local.student.Student
 import io.reactivex.Completable
 
 class AddStudentViewModel(private val mainRepository: MainRepository) {
