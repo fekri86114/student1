@@ -3,10 +3,12 @@ package info.fekri.student1.addStudent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.lifecycle.ViewModelProvider
 import info.fekri.student1.databinding.ActivityMain2Binding
-import info.fekri.student1.extra.asyncRequest
-import info.fekri.student1.extra.showToast
+import info.fekri.student1.extra.*
+import info.fekri.student1.mainScreen.MainScreenViewModel
 import info.fekri.student1.model.MainRepository
+import info.fekri.student1.model.local.MyDatabase
 import info.fekri.student1.model.local.student.Student
 import io.reactivex.CompletableObserver
 import io.reactivex.disposables.CompositeDisposable
@@ -27,11 +29,18 @@ class AddStudentActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         // focus on firstname edt -->
         binding.edtFirstName.requestFocus()
-        addStudentViewModel = AddStudentViewModel(MainRepository())
+        addStudentViewModel = ViewModelProvider(
+            this,
+            AddStudentViewModelFactory(
+                MainRepository(
+                    ApiServiceSingleton.apiService!!,
+                    MyDatabase.getDatabase(applicationContext).studentDao
+                )
+            )
+        )[AddStudentViewModel::class.java]
 
         val testMode = intent.getParcelableExtra<Student>("student")
         isInserting = (testMode == null)
-
         if (!isInserting) updateStudentLogic()
 
         binding.btnDone.setOnClickListener {
@@ -56,7 +65,10 @@ class AddStudentActivity : AppCompatActivity() {
         binding.edtFirstName.setText(splittedName[0])
         binding.edtLastName.setText(splittedName[splittedName.size - 1])
     }
+
     private fun updateStudent() {
+        binding.btnDone.text = "Update"
+
         val firstname = binding.edtFirstName.text.toString()
         val lastname = binding.edtLastName.text.toString()
         val course = binding.edtCourse.text.toString()
@@ -82,7 +94,7 @@ class AddStudentActivity : AppCompatActivity() {
                     }
 
                     override fun onComplete() {
-                        showToast("Update Student is done!")
+                        showToast("Student is updated!")
                         onBackPressed()
                     }
 

@@ -3,15 +3,20 @@ package info.fekri.student1.mainScreen
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cn.pedant.SweetAlert.SweetAlertDialog
 import info.fekri.student1.addStudent.AddStudentActivity
 import info.fekri.student1.databinding.ActivityMainBinding
+import info.fekri.student1.extra.ApiServiceSingleton
+import info.fekri.student1.extra.MainViewModelFactory
 import info.fekri.student1.extra.asyncRequest
 import info.fekri.student1.extra.showToast
 import info.fekri.student1.model.MainRepository
+import info.fekri.student1.model.local.MyDatabase
 import info.fekri.student1.model.local.student.Student
 import io.reactivex.CompletableObserver
 import io.reactivex.SingleObserver
@@ -29,50 +34,29 @@ class MainActivity : AppCompatActivity(), StudentAdapter.StudentEvent {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbarMain)
-        mainViewModel = MainScreenViewModel(MainRepository())
+        initRecycler()
+        mainViewModel = ViewModelProvider(
+            this,
+            MainViewModelFactory(
+                MainRepository(
+                    ApiServiceSingleton.apiService!!,
+                    MyDatabase.getDatabase(applicationContext).studentDao
+                )
+            )
+        )[MainScreenViewModel::class.java]
 
         binding.btnAddStudent.setOnClickListener {
             startActivity(Intent(this, AddStudentActivity::class.java))
         }
 
-        compositeDisposable.add(
-            mainViewModel.progressSubject.subscribe {
-                if (it == true) {
-                    runOnUiThread {
-                        binding.progressMain.visibility = View.VISIBLE
-                        binding.recyclerMain.visibility = View.INVISIBLE
-                    }
-                } else {
-                    runOnUiThread {
-                        binding.progressMain.visibility = View.INVISIBLE
-                        binding.recyclerMain.visibility = View.VISIBLE
-                    }
-                }
-            }
-        )
+        mainViewModel.getAllData().observe(this) {
+            refreshRecyclerData(it)
+        }
+        mainViewModel.getErrorData().observe(this) {
+            Log.e("errorLog", it)
+        }
 
     }
-
-    override fun onResume() {
-        super.onResume()
-        mainViewModel
-            .getAllStudents()
-            .asyncRequest()
-            .subscribe(object : SingleObserver<List<Student>> {
-                override fun onSubscribe(d: Disposable) {
-                    compositeDisposable.add(d)
-                }
-
-                override fun onError(e: Throwable) {
-                    showToast("Error: " + e.message ?: "null")
-                }
-
-                override fun onSuccess(t: List<Student>) {
-                    setDataRecycler(t)
-                }
-            })
-    }
-
     override fun onDestroy() {
         compositeDisposable.clear()
         super.onDestroy()
@@ -83,7 +67,6 @@ class MainActivity : AppCompatActivity(), StudentAdapter.StudentEvent {
         intent.putExtra("student", student)
         startActivity(intent)
     }
-
     override fun onItemLongClicked(student: Student, position: Int) {
         val dialog = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
         dialog.contentText = "Delete this Item?"
@@ -98,6 +81,9 @@ class MainActivity : AppCompatActivity(), StudentAdapter.StudentEvent {
         dialog.show()
     }
 
+    private fun refreshRecyclerData(newData: List<Student>) {
+        myAdapter.refreshData(newData)
+    }
     private fun deleteDataFromServer(student: Student, position: Int) {
         // remove student from server
         mainViewModel
@@ -107,21 +93,16 @@ class MainActivity : AppCompatActivity(), StudentAdapter.StudentEvent {
                 override fun onSubscribe(d: Disposable) {
                     compositeDisposable.add(d)
                 }
-
                 override fun onComplete() {
                     showToast("Student removed!")
                 }
-
                 override fun onError(e: Throwable) {
                     showToast("Error: " + e.message ?: "null")
                 }
             })
-        // remove student from adapter
-        myAdapter.removeItem(student, position)
     }
-
-    private fun setDataRecycler(data: List<Student>) {
-        val myData = ArrayList(data)
+    private fun initRecycler() {
+        val myData = arrayListOf<Student>()
         myAdapter = StudentAdapter(myData, this)
         binding.recyclerMain.adapter = myAdapter
         binding.recyclerMain.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)

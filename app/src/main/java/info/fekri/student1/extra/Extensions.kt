@@ -11,11 +11,6 @@ fun Context.showToast(msg: String) {
     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 }
 
-fun <T> Single<T>.asyncRequest(): Single<T> {
-    return subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-}
-
 fun Completable.asyncRequest(): Completable {
     return subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
